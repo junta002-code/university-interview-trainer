@@ -1,0 +1,10 @@
+{
+  "name": "大学面接質問トレーナー",
+  "short_name": "面接トレーナー",
+  "description": "大学入試の面接練習ができる質問トレーナー",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2864e6",
+  "lang": "ja"
+}
