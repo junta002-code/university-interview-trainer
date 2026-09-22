@@ -322,19 +322,17 @@
       <div class="finish-area">
 
         <h2>
-          固定質問5問が終了しました
-        </h2>
+  　　　10問の面接練習が終了しました
+</h2>
 
-        <p>
-          ここまでが、どの大学でも聞かれやすい
-          基本的な質問です。
-        </p>
+<p>
+  お疲れさまでした。
+</p>
 
-        <p>
-          次の段階では、第6問～第10問として、
-          200種類の質問からランダムに選んで
-          出題する機能を追加します。
-        </p>
+<p>
+  固定質問5問と、200問の中からランダムに選ばれた
+  5問に答えました。
+</p>
 
         <button
           class="button"
@@ -355,251 +353,246 @@
   </div>
 
 
+  <script src="questions.js"></script>
   <script>
 
-    /* ==================== */
-    /* 面接データ */
-    /* ==================== */
+ /* ==================== */
+/* 面接データ */
+/* ==================== */
 
-    let university = "";
-    let faculty = "";
-    let currentQuestion = 0;
+let university = "";
+let faculty = "";
+let currentQuestion = 0;
+let selectedRandomQuestions = [];
 
 
-    /*
-      第1～5問
-      ここではまだ固定質問だけを登録します。
-    */
+/* ==================== */
+/* 第1～5問：固定質問 */
+/* ==================== */
 
-    const questions = [
+const fixedQuestions = [
 
-      /* 第1問 */
-
-      {
+    {
         text: function() {
-
-          return (
-            "あなたが" +
-            university +
-            faculty +
-            "を志望した理由を教えてください。"
-          );
-
+            return (
+                "あなたが" +
+                university +
+                faculty +
+                "を志望した理由を教えてください。"
+            );
         }
-      },
+    },
 
-
-      /* 第2問 */
-
-      {
+    {
         text: function() {
-
-          return (
-            "高校生活で力を入れて取り組んだことを教えてください。"
-          );
-
+            return "高校生活で力を入れて取り組んだことを教えてください。";
         }
-      },
+    },
 
-
-      /* 第3問 */
-
-      {
+    {
         text: function() {
-
-          return (
-            university +
-            faculty +
-            "で、どのようなことを学びたいですか。"
-          );
-
+            return (
+                university +
+                faculty +
+                "で、どのようなことを学びたいですか。"
+            );
         }
-      },
+    },
 
-
-      /* 第4問 */
-
-      {
+    {
         text: function() {
-
-          return (
-            "あなたの長所を教えてください。" +
-            "また、その長所を大学生活でどのように生かしたいですか。"
-          );
-
+            return (
+                "あなたの長所を教えてください。" +
+                "また、その長所を大学生活でどのように生かしたいですか。"
+            );
         }
-      },
+    },
 
-
-      /* 第5問 */
-
-      {
+    {
         text: function() {
-
-          return (
-            "大学卒業後、どのような進路を考えていますか。"
-          );
-
+            return "大学卒業後、どのような進路を考えていますか。";
         }
-      }
+    }
 
-    ];
+];
 
 
-    /* ==================== */
-    /* 面接開始 */
-    /* ==================== */
+/* ==================== */
+/* 第6～10問：ランダム5問 */
+/* ==================== */
 
-    function startInterview() {
+function selectRandomQuestions() {
 
-      university =
+    const shuffled = [...randomQuestions];
+
+    for (let i = shuffled.length - 1; i > 0; i--) {
+
+        const j = Math.floor(Math.random() * (i + 1));
+
+        [shuffled[i], shuffled[j]] =
+            [shuffled[j], shuffled[i]];
+    }
+
+    selectedRandomQuestions =
+        shuffled.slice(0, 5);
+}
+
+
+/* ==================== */
+/* 面接開始 */
+/* ==================== */
+
+function startInterview() {
+
+    university =
         document
-          .getElementById("university")
-          .value
-          .trim();
+        .getElementById("university")
+        .value
+        .trim();
 
-      faculty =
+    faculty =
         document
-          .getElementById("faculty")
-          .value
-          .trim();
+        .getElementById("faculty")
+        .value
+        .trim();
 
 
-      if (university === "") {
+    if (university === "") {
 
         alert("大学名を入力してください。");
 
         return;
-      }
+    }
 
 
-      if (faculty === "") {
+    if (faculty === "") {
 
         alert("学部・学科を入力してください。");
 
         return;
-      }
-
-
-      currentQuestion = 0;
-
-      showQuestion();
-
     }
 
 
-    /* ==================== */
-    /* 質問表示 */
-    /* ==================== */
+    currentQuestion = 0;
 
-    function showQuestion() {
+    selectRandomQuestions();
 
-      document
+    showQuestion();
+}
+
+
+/* ==================== */
+/* 質問表示 */
+/* ==================== */
+
+function showQuestion() {
+
+    document
         .getElementById("start-screen")
         .classList.remove("active");
 
-
-      document
+    document
         .getElementById("finish-screen")
         .classList.remove("active");
 
-
-      document
+    document
         .getElementById("question-screen")
         .classList.add("active");
 
 
-      const question =
-        questions[currentQuestion];
+    let question;
 
 
-      document
-        .getElementById("question-number")
-        .textContent =
-          "第" +
-          (currentQuestion + 1) +
-          "問／10問";
+    if (currentQuestion < 5) {
 
+        question =
+            fixedQuestions[currentQuestion];
 
-      document
-        .getElementById("question-text")
-        .textContent =
-          question.text();
+    } else {
 
-
-      const nextButton =
-        document.getElementById("next-button");
-
-
-      nextButton.textContent = "次へ";
+        question =
+            selectedRandomQuestions[currentQuestion - 5];
 
     }
 
 
-    /* ==================== */
-    /* 次の質問 */
-    /* ==================== */
+    document
+        .getElementById("question-number")
+        .textContent =
+            "第" +
+            (currentQuestion + 1) +
+            "問／10問";
 
-    function nextQuestion() {
 
-      /*
-        第1～4問の場合
-        次の質問へ進む
-      */
+    document
+        .getElementById("question-text")
+        .textContent =
+            typeof question.text === "function"
+                ? question.text()
+                : question.text;
 
-      if (
-        currentQuestion <
-        questions.length - 1
-      ) {
+
+    const nextButton =
+        document.getElementById("next-button");
+
+
+    if (currentQuestion === 9) {
+
+        nextButton.textContent = "終了";
+
+    } else {
+
+        nextButton.textContent = "次へ";
+
+    }
+}
+
+
+/* ==================== */
+/* 次の質問 */
+/* ==================== */
+
+function nextQuestion() {
+
+    if (currentQuestion < 9) {
 
         currentQuestion++;
 
         showQuestion();
 
         return;
-      }
-
-
-      /*
-        第5問が終わった場合
-        固定質問終了画面へ
-      */
-
-      document
-        .getElementById("question-screen")
-        .classList.remove("active");
-
-
-      document
-        .getElementById("finish-screen")
-        .classList.add("active");
-
     }
 
 
-    /* ==================== */
-    /* 最初に戻る */
-    /* ==================== */
-
-    function backToStart() {
-
-      document
+    document
         .getElementById("question-screen")
         .classList.remove("active");
 
+    document
+        .getElementById("finish-screen")
+        .classList.add("active");
+}
 
-      document
+
+/* ==================== */
+/* 最初に戻る */
+/* ==================== */
+
+function backToStart() {
+
+    document
+        .getElementById("question-screen")
+        .classList.remove("active");
+
+    document
         .getElementById("finish-screen")
         .classList.remove("active");
 
-
-      document
+    document
         .getElementById("start-screen")
         .classList.add("active");
-
-    }
-
-  </script>
-
+}
+    
+</script>
 </body>
 </html>
