@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>大学面接質問トレーナー</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      background: #f3f6fa;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: white;
+      padding: 32px 22px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .title-area {
+      text-align: center;
+      margin-top: 35px;
+      margin-bottom: 40px;
+    }
+
+    .title-area h1 {
+      margin: 0;
+      font-size: 30px;
+      line-height: 1.4;
+      color: #1d4ed8;
+    }
+
+    .title-area p {
+      margin-top: 12px;
+      color: #64748b;
+      font-size: 15px;
+    }
+
+    .form-area {
+      margin-top: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 9px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px;
+      font-size: 16px;
+      border: 2px solid #dbe3ec;
+      border-radius: 10px;
+      outline: none;
+      background: #fff;
+    }
+
+    .form-group input:focus {
+      border-color: #3b82f6;
+    }
+
+    .start-button {
+      width: 100%;
+      margin-top: 12px;
+      padding: 17px;
+      border: none;
+      border-radius: 12px;
+      background: #2563eb;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .start-button:active {
+      transform: scale(0.98);
+    }
+
+    .notice {
+      margin-top: 28px;
+      padding: 16px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #475569;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 35px;
+      text-align: center;
+      color: #94a3b8;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <div class="title-area">
+      <h1>大学面接質問トレーナー</h1>
+      <p>大学入試の面接練習を始めましょう</p>
+    </div>
+
+    <div class="form-area">
+
+      <div class="form-group">
+        <label for="university">大学名</label>
+        <input
+          type="text"
+          id="university"
+          placeholder="例：岡山大学"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="faculty">学部・学科</label>
+        <input
+          type="text"
+          id="faculty"
+          placeholder="例：文学部"
+        >
+      </div>
+
+      <button class="start-button" onclick="startInterview()">
+        面接を始める
+      </button>
+
+      <div class="notice">
+        大学名と学部・学科を入力してから「面接を始める」を押してください。
+        入力した大学・学部に応じた質問も、今後追加していきます。
+      </div>
+
+    </div>
+
+    <div class="footer">
+      大学面接質問トレーナー
+    </div>
+
+  </div>
+
+  <script>
+    function startInterview() {
+
+      const university =
+        document.getElementById("university").value.trim();
+
+      const faculty =
+        document.getElementById("faculty").value.trim();
+
+      if (university === "") {
+        alert("大学名を入力してください。");
+        return;
+      }
+
+      if (faculty === "") {
+        alert("学部・学科を入力してください。");
+        return;
+      }
+
+      alert(
+        university + "・" + faculty +
+        "の面接練習を開始します。\n\n" +
+        "次の段階で質問画面を追加します。"
+      );
+    }
+  </script>
+
+</body>
+</html>
