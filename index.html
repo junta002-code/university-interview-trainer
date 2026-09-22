@@ -34,6 +34,18 @@
       flex-direction: column;
     }
 
+    /* 共通 */
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    /* スタート画面 */
+
     .title-area {
       text-align: center;
       margin-top: 35px;
@@ -51,10 +63,6 @@
       margin-top: 12px;
       color: #64748b;
       font-size: 15px;
-    }
-
-    .form-area {
-      margin-top: 10px;
     }
 
     .form-group {
@@ -82,9 +90,8 @@
       border-color: #3b82f6;
     }
 
-    .start-button {
+    .button {
       width: 100%;
-      margin-top: 12px;
       padding: 17px;
       border: none;
       border-radius: 12px;
@@ -95,7 +102,7 @@
       cursor: pointer;
     }
 
-    .start-button:active {
+    .button:active {
       transform: scale(0.98);
     }
 
@@ -109,12 +116,85 @@
       line-height: 1.7;
     }
 
+    /* 質問画面 */
+
+    .question-header {
+      text-align: center;
+      margin-top: 35px;
+      margin-bottom: 30px;
+    }
+
+    .question-number {
+      display: inline-block;
+      padding: 7px 15px;
+      border-radius: 20px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .question-box {
+      margin-top: 30px;
+      padding: 25px 20px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+
+    .question-text {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.7;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .question-info {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #475569;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .next-button {
+      margin-top: 30px;
+    }
+
+    .back-button {
+      margin-top: 12px;
+      background: #64748b;
+    }
+
     .footer {
       margin-top: auto;
       padding-top: 35px;
       text-align: center;
       color: #94a3b8;
       font-size: 12px;
+    }
+
+    /* スマホ */
+
+    @media (max-width: 480px) {
+      .app {
+        padding: 24px 18px;
+      }
+
+      .title-area {
+        margin-top: 25px;
+      }
+
+      .title-area h1 {
+        font-size: 27px;
+      }
+
+      .question-text {
+        font-size: 21px;
+      }
     }
   </style>
 </head>
@@ -123,12 +203,16 @@
 
   <div class="app">
 
-    <div class="title-area">
-      <h1>大学面接質問トレーナー</h1>
-      <p>大学入試の面接練習を始めましょう</p>
-    </div>
+    <!-- ==================== -->
+    <!-- スタート画面 -->
+    <!-- ==================== -->
 
-    <div class="form-area">
+    <div id="start-screen" class="screen active">
+
+      <div class="title-area">
+        <h1>大学面接質問トレーナー</h1>
+        <p>大学入試の面接練習を始めましょう</p>
+      </div>
 
       <div class="form-group">
         <label for="university">大学名</label>
@@ -148,16 +232,55 @@
         >
       </div>
 
-      <button class="start-button" onclick="startInterview()">
+      <button class="button" onclick="startInterview()">
         面接を始める
       </button>
 
       <div class="notice">
-        大学名と学部・学科を入力してから「面接を始める」を押してください。
-        入力した大学・学部に応じた質問も、今後追加していきます。
+        大学名と学部・学科を入力してください。
+        入力した内容は、質問文の一部にも使用します。
       </div>
 
     </div>
+
+
+    <!-- ==================== -->
+    <!-- 質問画面 -->
+    <!-- ==================== -->
+
+    <div id="question-screen" class="screen">
+
+      <div class="question-header">
+        <div id="question-number" class="question-number">
+          第1問／10問
+        </div>
+      </div>
+
+      <div class="question-box">
+        <p id="question-text" class="question-text"></p>
+      </div>
+
+      <div class="question-info">
+        質問を読んで、声に出して回答してみましょう。
+      </div>
+
+      <button
+        id="next-button"
+        class="button next-button"
+        onclick="nextQuestion()"
+      >
+        次へ
+      </button>
+
+      <button
+        class="button back-button"
+        onclick="backToStart()"
+      >
+        最初に戻る
+      </button>
+
+    </div>
+
 
     <div class="footer">
       大学面接質問トレーナー
@@ -165,13 +288,58 @@
 
   </div>
 
+
   <script>
+
+    /* ==================== */
+    /* 面接データ */
+    /* ==================== */
+
+    let university = "";
+    let faculty = "";
+    let currentQuestion = 0;
+
+    const questions = [
+
+      // 第1問
+      {
+        text: function() {
+          return "あなたが" +
+            university +
+            faculty +
+            "を志望した理由を教えてください。";
+        }
+      },
+
+      // 第2問
+      {
+        text: function() {
+          return "高校生活で力を入れて取り組んだことを教えてください。";
+        }
+      },
+
+      // 第3問
+      {
+        text: function() {
+          return university +
+            faculty +
+            "で、どのようなことを学びたいですか。";
+        }
+      }
+
+    ];
+
+
+    /* ==================== */
+    /* 面接開始 */
+    /* ==================== */
+
     function startInterview() {
 
-      const university =
+      university =
         document.getElementById("university").value.trim();
 
-      const faculty =
+      faculty =
         document.getElementById("faculty").value.trim();
 
       if (university === "") {
@@ -184,12 +352,81 @@
         return;
       }
 
-      alert(
-        university + "・" + faculty +
-        "の面接練習を開始します。\n\n" +
-        "次の段階で質問画面を追加します。"
-      );
+      currentQuestion = 0;
+
+      showQuestion();
     }
+
+
+    /* ==================== */
+    /* 質問表示 */
+    /* ==================== */
+
+    function showQuestion() {
+
+      document.getElementById("start-screen")
+        .classList.remove("active");
+
+      document.getElementById("question-screen")
+        .classList.add("active");
+
+      const question = questions[currentQuestion];
+
+      document.getElementById("question-number")
+        .textContent =
+        "第" + (currentQuestion + 1) + "問／10問";
+
+      document.getElementById("question-text")
+        .textContent =
+        question.text();
+
+      const nextButton =
+        document.getElementById("next-button");
+
+      if (currentQuestion === questions.length - 1) {
+        nextButton.textContent = "次へ";
+      } else {
+        nextButton.textContent = "次へ";
+      }
+    }
+
+
+    /* ==================== */
+    /* 次の質問 */
+    /* ==================== */
+
+    function nextQuestion() {
+
+      if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        showQuestion();
+
+      } else {
+
+        alert(
+          "ここまでが現在作成されている質問です。\n\n" +
+          "このあと、第4問～第10問を追加していきます。"
+        );
+
+      }
+    }
+
+
+    /* ==================== */
+    /* 最初に戻る */
+    /* ==================== */
+
+    function backToStart() {
+
+      document.getElementById("question-screen")
+        .classList.remove("active");
+
+      document.getElementById("start-screen")
+        .classList.add("active");
+    }
+
   </script>
 
 </body>
