@@ -34,8 +34,6 @@
       flex-direction: column;
     }
 
-    /* 共通 */
-
     .screen {
       display: none;
     }
@@ -169,6 +167,25 @@
       background: #64748b;
     }
 
+    /* 終了画面 */
+
+    .finish-area {
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .finish-area h2 {
+      font-size: 28px;
+      color: #1d4ed8;
+      margin-bottom: 25px;
+    }
+
+    .finish-area p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #475569;
+    }
+
     .footer {
       margin-top: auto;
       padding-top: 35px;
@@ -177,9 +194,8 @@
       font-size: 12px;
     }
 
-    /* スマホ */
-
     @media (max-width: 480px) {
+
       .app {
         padding: 24px 18px;
       }
@@ -216,6 +232,7 @@
 
       <div class="form-group">
         <label for="university">大学名</label>
+
         <input
           type="text"
           id="university"
@@ -225,6 +242,7 @@
 
       <div class="form-group">
         <label for="faculty">学部・学科</label>
+
         <input
           type="text"
           id="faculty"
@@ -232,13 +250,16 @@
         >
       </div>
 
-      <button class="button" onclick="startInterview()">
+      <button
+        class="button"
+        onclick="startInterview()"
+      >
         面接を始める
       </button>
 
       <div class="notice">
         大学名と学部・学科を入力してください。
-        入力した内容は、質問文の一部にも使用します。
+        入力した内容は質問文の一部にも使用します。
       </div>
 
     </div>
@@ -251,13 +272,23 @@
     <div id="question-screen" class="screen">
 
       <div class="question-header">
-        <div id="question-number" class="question-number">
+
+        <div
+          id="question-number"
+          class="question-number"
+        >
           第1問／10問
         </div>
+
       </div>
 
       <div class="question-box">
-        <p id="question-text" class="question-text"></p>
+
+        <p
+          id="question-text"
+          class="question-text"
+        ></p>
+
       </div>
 
       <div class="question-info">
@@ -282,6 +313,41 @@
     </div>
 
 
+    <!-- ==================== -->
+    <!-- 終了画面 -->
+    <!-- ==================== -->
+
+    <div id="finish-screen" class="screen">
+
+      <div class="finish-area">
+
+        <h2>
+          固定質問5問が終了しました
+        </h2>
+
+        <p>
+          ここまでが、どの大学でも聞かれやすい
+          基本的な質問です。
+        </p>
+
+        <p>
+          次の段階では、第6問～第10問として、
+          200種類の質問からランダムに選んで
+          出題する機能を追加します。
+        </p>
+
+        <button
+          class="button"
+          onclick="backToStart()"
+        >
+          最初に戻る
+        </button>
+
+      </div>
+
+    </div>
+
+
     <div class="footer">
       大学面接質問トレーナー
     </div>
@@ -299,31 +365,81 @@
     let faculty = "";
     let currentQuestion = 0;
 
+
+    /*
+      第1～5問
+      ここではまだ固定質問だけを登録します。
+    */
+
     const questions = [
 
-      // 第1問
+      /* 第1問 */
+
       {
         text: function() {
-          return "あなたが" +
+
+          return (
+            "あなたが" +
             university +
             faculty +
-            "を志望した理由を教えてください。";
+            "を志望した理由を教えてください。"
+          );
+
         }
       },
 
-      // 第2問
+
+      /* 第2問 */
+
       {
         text: function() {
-          return "高校生活で力を入れて取り組んだことを教えてください。";
+
+          return (
+            "高校生活で力を入れて取り組んだことを教えてください。"
+          );
+
         }
       },
 
-      // 第3問
+
+      /* 第3問 */
+
       {
         text: function() {
-          return university +
+
+          return (
+            university +
             faculty +
-            "で、どのようなことを学びたいですか。";
+            "で、どのようなことを学びたいですか。"
+          );
+
+        }
+      },
+
+
+      /* 第4問 */
+
+      {
+        text: function() {
+
+          return (
+            "あなたの長所を教えてください。" +
+            "また、その長所を大学生活でどのように生かしたいですか。"
+          );
+
+        }
+      },
+
+
+      /* 第5問 */
+
+      {
+        text: function() {
+
+          return (
+            "大学卒業後、どのような進路を考えていますか。"
+          );
+
         }
       }
 
@@ -337,24 +453,38 @@
     function startInterview() {
 
       university =
-        document.getElementById("university").value.trim();
+        document
+          .getElementById("university")
+          .value
+          .trim();
 
       faculty =
-        document.getElementById("faculty").value.trim();
+        document
+          .getElementById("faculty")
+          .value
+          .trim();
+
 
       if (university === "") {
+
         alert("大学名を入力してください。");
+
         return;
       }
 
+
       if (faculty === "") {
+
         alert("学部・学科を入力してください。");
+
         return;
       }
+
 
       currentQuestion = 0;
 
       showQuestion();
+
     }
 
 
@@ -364,30 +494,45 @@
 
     function showQuestion() {
 
-      document.getElementById("start-screen")
+      document
+        .getElementById("start-screen")
         .classList.remove("active");
 
-      document.getElementById("question-screen")
+
+      document
+        .getElementById("finish-screen")
+        .classList.remove("active");
+
+
+      document
+        .getElementById("question-screen")
         .classList.add("active");
 
-      const question = questions[currentQuestion];
 
-      document.getElementById("question-number")
-        .textContent =
-        "第" + (currentQuestion + 1) + "問／10問";
+      const question =
+        questions[currentQuestion];
 
-      document.getElementById("question-text")
+
+      document
+        .getElementById("question-number")
         .textContent =
-        question.text();
+          "第" +
+          (currentQuestion + 1) +
+          "問／10問";
+
+
+      document
+        .getElementById("question-text")
+        .textContent =
+          question.text();
+
 
       const nextButton =
         document.getElementById("next-button");
 
-      if (currentQuestion === questions.length - 1) {
-        nextButton.textContent = "次へ";
-      } else {
-        nextButton.textContent = "次へ";
-      }
+
+      nextButton.textContent = "次へ";
+
     }
 
 
@@ -397,20 +542,38 @@
 
     function nextQuestion() {
 
-      if (currentQuestion < questions.length - 1) {
+      /*
+        第1～4問の場合
+        次の質問へ進む
+      */
+
+      if (
+        currentQuestion <
+        questions.length - 1
+      ) {
 
         currentQuestion++;
 
         showQuestion();
 
-      } else {
-
-        alert(
-          "ここまでが現在作成されている質問です。\n\n" +
-          "このあと、第4問～第10問を追加していきます。"
-        );
-
+        return;
       }
+
+
+      /*
+        第5問が終わった場合
+        固定質問終了画面へ
+      */
+
+      document
+        .getElementById("question-screen")
+        .classList.remove("active");
+
+
+      document
+        .getElementById("finish-screen")
+        .classList.add("active");
+
     }
 
 
@@ -420,11 +583,20 @@
 
     function backToStart() {
 
-      document.getElementById("question-screen")
+      document
+        .getElementById("question-screen")
         .classList.remove("active");
 
-      document.getElementById("start-screen")
+
+      document
+        .getElementById("finish-screen")
+        .classList.remove("active");
+
+
+      document
+        .getElementById("start-screen")
         .classList.add("active");
+
     }
 
   </script>
