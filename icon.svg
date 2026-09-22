@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#f8fbff"/>
+
+  <!-- yellow sparkle -->
+  <path d="M386 76 L398 112 L434 124 L398 136 L386 172 L374 136 L338 124 L374 112 Z"
+        fill="#f4c542"/>
+
+  <!-- graduation cap -->
+  <path d="M86 202 L256 126 L426 202 L256 278 Z"
+        fill="#183a68"/>
+  <path d="M150 246 L256 294 L362 246 L362 286
+           C362 330 315 358 256 358
+           C197 358 150 330 150 286 Z"
+        fill="#244d82"/>
+  <path d="M426 202 V286"
+        stroke="#183a68" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="426" cy="296" r="12" fill="#f4c542"/>
+
+  <!-- open book -->
+  <path d="M86 350
+           C135 326 187 328 246 356
+           L246 420
+           C187 392 135 390 86 414 Z"
+        fill="#ffffff" stroke="#183a68" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M426 350
+           C377 326 325 328 266 356
+           L266 420
+           C325 392 377 390 426 414 Z"
+        fill="#ffffff" stroke="#183a68" stroke-width="12" stroke-linejoin="round"/>
+  <path d="M256 356 V424"
+        stroke="#183a68" stroke-width="10" stroke-linecap="round"/>
+</svg>
