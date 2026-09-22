@@ -524,12 +524,28 @@ function showQuestion() {
             "問／10問";
 
 
-    document
-        .getElementById("question-text")
-        .textContent =
-            typeof question.text === "function"
-                ? question.text()
-                : question.text;
+    const questionText =
+    typeof question.text === "function"
+        ? question.text()
+        : question.text;
+
+document
+    .getElementById("question-text")
+    .textContent = questionText;
+
+
+/* 質問を音声で読み上げる */
+speechSynthesis.cancel();
+
+const utterance =
+    new SpeechSynthesisUtterance(questionText);
+
+utterance.lang = "ja-JP";
+utterance.rate = 0.95;
+utterance.pitch = 1.0;
+utterance.volume = 1.0;
+
+speechSynthesis.speak(utterance);
 
 
     const nextButton =
