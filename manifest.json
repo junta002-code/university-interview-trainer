@@ -1,6 +1,6 @@
 {
-  "name": "大学面接質問トレーナー",
-  "short_name": "面接トレーナー",
+  "name": "面接先生",
+  "short_name": "面接先生",
   "description": "大学入試の面接練習ができる質問トレーナー",
   "start_url": "/",
   "display": "standalone",
