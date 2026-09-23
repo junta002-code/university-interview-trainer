@@ -1,4 +1,4 @@
-const CACHE_NAME = "university-interview-trainer-v2";
+   const CACHE_NAME = "university-interview-trainer-v3";
 
 const FILES_TO_CACHE = [
   "/",
